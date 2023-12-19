@@ -7,12 +7,14 @@
     <title>Recipe App</title>
 </head>
 <body>
+    <button id="favoritesBtn">Favorites Recipes</button>
     <h1>Recipe App</h1>
-  
     <form id="recipeForm">
-        <label for="ingredientInput">Enter Ingredient:</label>
+        <label for="ingredientInput">Enter Include Ingredient:</label>
         <input type="text" id="ingredientInput" placeholder="Ingredient">
-        
+        <br>
+        <label for="excludeIngredientInput">Enter Exclude Ingredient:</label>
+        <input type="text" id="excludeIngredientInput" placeholder="Exclude Ingredient">
         <br>
         <div>
             <input type="checkbox" id="glutenFreeCheckbox">
@@ -21,22 +23,24 @@
             <input type="checkbox" id="dairyFreeCheckbox">
             <label for="dairyFreeCheckbox">Dairy-Free</label>
         </div>
-        
-        
         <br>
-        
         <button type="button" id="searchButton">Search!</button>
     </form>
-    
     <div id="recipesContainer"></div>
-
     <script id="recipe-template" type="text/x-handlebars-template">
         {{#each recipes}}
             <div class="recipe">
                 <h3><a href="{{href}}" target="_blank">{{title}}</a></h3>
                 <img src="{{thumbnail}}" alt="{{title}}">
+                <button class="favoriteButton" data-recipe-id={{id}}>
+                    {{#if isFavorite}}
+                        <i class="fas fa-heart" style="color: red;"></i>
+                    {{else}}
+                        <i class="far fa-heart"></i>
+                    {{/if}}
+                </button>
                 <p>Ingredients</p>
-                <ul>
+                <ul class="ingredients-list">
                     {{#each ingredients}}
                         <li>{{this}}</li>
                     {{/each}}
@@ -44,7 +48,6 @@
             </div>
         {{/each}}
     </script>
-
     <script src="./jquery/dist/jquery.js"></script>
     <script src="./handlebars/dist/handlebars.js"></script>
     <script src="recipe.js"></script>

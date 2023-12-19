@@ -7,5 +7,4 @@ function mapRecipes(recipesData) {
         href: recipe.href
     }))
 }
-
 module.exports = { mapRecipes }

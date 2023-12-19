@@ -157,3 +157,36 @@ button:hover {
     height: 0.3125rem;
     background: #e7ab46;
 }
+
+.favoriteButton {
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    margin-right: auto;
+    margin-left: 10px;
+}
+
+
+.favoriteButton i.far.fa-heart::before,
+.favoriteButton i.fas.fa-heart::before {
+    content: '\2665';
+    color: red;
+}
+
+.favoriteButton i.far.fa-heart::before {
+    color: white;
+}
+
+#favoritesBtn{
+    display: flex;
+    align-items: center;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+    margin-right: auto;
+    margin-left: 10px;
+}

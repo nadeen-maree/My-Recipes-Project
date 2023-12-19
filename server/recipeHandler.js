@@ -4,7 +4,7 @@ const { mapRecipes } = require('./recipeUtils')
 
 function handleRecipes(req, res, next) {
     const { ingredient } = req.params
-    const { glutenFree, dairyFree } = req.query
+    const { glutenFree, dairyFree, excludeIngredient } = req.query
 
     fetchRecipes(ingredient)
         .then(response => {
@@ -17,6 +17,12 @@ function handleRecipes(req, res, next) {
 
             if (dairyFree === 'true') {
                 filteredRecipes = filterRecipesByIngredients(filteredRecipes, { dairyFree: true })
+            }
+
+            if (excludeIngredient) {
+                filteredRecipes = filteredRecipes.filter(recipe =>
+                    !recipe.ingredients.includes(excludeIngredient)
+                )
             }
 
             res.json({ recipes: filteredRecipes })
