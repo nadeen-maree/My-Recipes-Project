@@ -20,15 +20,17 @@ app.get('/favorites', (req, res) => {
 app.post('/favorites/add', (req, res) => {
     const recipeData = req.body
     favorites.push(recipeData)
-    res.sendStatus(200)
+    res.send(favorites)
 })
 
 app.delete('/favorites/remove/:recipeId', (req, res) => {
-    const { recipeId } = req.params
+    const recipeId  = req.params.recipeId
     const index = favorites.findIndex(recipe => recipe.id == recipeId)
+    console.log(favorites[index])
     if (index !== -1) {
         favorites.splice(index, 1)
-        res.sendStatus(200)
+        console.log(favorites[index])
+        res.send(favorites)
     } else {
         res.status(404).send('Recipe not found in favorites')
     }

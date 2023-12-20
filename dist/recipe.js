@@ -5,5 +5,6 @@ class Recipe {
         this.ingredients = ingredients
         this.thumbnail = thumbnail
         this.href = href
+        this.isFavorite = false
     }
 }

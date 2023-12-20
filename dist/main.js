@@ -1,17 +1,21 @@
 const render = new Renderer()
+let favorites = []
+let recipes = []
+let recipeData = {}
+let isInFavoritePage = false
 
 $('#searchButton').on('click', function() {
     const ingredient = $('#ingredientInput').val()
     const excludeIngredient = $('#excludeIngredientInput').val()
     const glutenFree = $('#glutenFreeCheckbox').is(':checked')
     const dairyFree = $('#dairyFreeCheckbox').is(':checked')
-
+    isInFavoritePage = false
     $.get(`/recipes/${ingredient}`, {
         glutenFree: glutenFree,
         dairyFree: dairyFree,
         excludeIngredient: excludeIngredient
     }, function(data) {
-        const recipes = data.recipes.map(recipeData => new Recipe(
+        recipes = data.recipes.map(recipeData => new Recipe(
             recipeData.idMeal,
             recipeData.title,
             recipeData.ingredients,
@@ -19,33 +23,37 @@ $('#searchButton').on('click', function() {
             recipeData.href
         ))
 
+       recipes.forEach(recipeData => {
+        favorites.find(fav => fav.id == recipeData.id) ? recipeData.isFavorite = true : recipeData.isFavorite = false
+       })
+
         render.renderRecipes(recipes)
     })
 })
 
 $('#favoritesBtn').on('click', function() {
     $.get('/favorites', function(data) {
-        const favoritesRecipes = data.recipes.map(recipeData => new Recipe(
+         favorites = data.recipes.map(recipeData => new Recipe(
                 recipeData.id,
                 recipeData.title,
                 recipeData.ingredients,
                 recipeData.thumbnail,
                 recipeData.href
             ))
-            const apiRecipeData = favoritesRecipes
+            const apiRecipeData = favorites
             const favoritesIds = favorites.map(recipe => recipe.id)
 
-            const recipesWithFavorites = apiRecipeData.map(recipeData => {
+            favorites = apiRecipeData.map(recipeData => {
                 const isFavorite = favoritesIds.includes(recipeData.id)
                 return { ...recipeData, isFavorite }
             })
 
-        render.renderRecipes(recipesWithFavorites)
+            isInFavoritePage = true
+        render.renderRecipes(favorites)
     })
 })
 
-let recipeData = {}
-const favorites = []
+
 $('body').on('click', '.favoriteButton', function() {
     const $heartIcon = $(this).find('i')
     const recipeId = $(this).data('recipe-id')
@@ -72,7 +80,7 @@ $('body').on('click', '.favoriteButton', function() {
        addToFavorites(recipeData)
     } else if($heartIcon.hasClass('fas')){
         $heartIcon.removeClass('fas').addClass('far')
-        removeFromFavorites(recipeData)
+        removeFromFavorites(recipeId)
     }
 })
 
@@ -87,34 +95,50 @@ function addToFavorites(recipeData) {
     fetch('/favorites/add', requestOptions)
         .then(response => {
             if (response.ok) {
-                recipeData.isFavorite = true
-                console.log('Recipe added to favorites')
-                favorites.push(recipeData)
-                console.log('Favorites Array:', favorites)
-            } else {
-                throw new Error('Failed to add recipe to favorites')
+                return response.json()
             }
-        })
+            throw new Error('Failed to fetch book')
+            })
+            .then(data => {
+                recipeData.isFavorite = true
+                favorites = data
+                console.log(data)
+            })
         .catch(error => {
             console.error('Error adding recipe to favorites:', error.message)
         })
 }
 
-function removeFromFavorites(recipeData) {
-    fetch(`/favorites/remove/${recipeData.id}`, {
+function removeFromFavorites(recipeId) {
+    fetch(`/favorites/remove/${recipeId}`, {
         method: 'DELETE'
     })
     .then(response => {
-        if (response.ok) {
-            const index = favorites.findIndex(recipe => recipe.id === recipeData.id)
-            if (index !== -1) {
-                recipeData.isFavorite = false
-                favorites.splice(index, 1)
-                console.log('Recipe removed from favorites:', recipeData.id)
+    if (response.ok) {
+        return response.json()
+    }
+    throw new Error('Failed to fetch book')
+    })
+    .then(data => {
+        favorites = data
+        const apiRecipeData = favorites
+            const favoritesIds = favorites.map(recipe => recipe.id)
+
+            favorites = apiRecipeData.map(recipeData => {
+                const isFavorite = favoritesIds.includes(recipeData.id)
+                return { ...recipeData, isFavorite }
+            })
+            
+            if(isInFavoritePage){
+                render.renderRecipes(favorites)
+            }else{
+                recipes.forEach(recipeData => {
+                    favorites.find(fav => fav.id == recipeData.id) ? recipeData.isFavorite = true : recipeData.isFavorite = false
+                })
+                render.renderRecipes(recipes)
             }
-        } else {
-            console.error('Error removing recipe from favorites')
-        }
+        
+        console.log(data)
     })
     .catch(error => {
         console.error('Error:', error)
