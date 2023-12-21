@@ -26,7 +26,7 @@ app.post('/favorites/add', (req, res) => {
 app.delete('/favorites/remove/:recipeId', (req, res) => {
     const recipeId  = req.params.recipeId
     const index = favorites.findIndex(recipe => recipe.id == recipeId)
-    console.log(favorites[index])
+    console.log(index)
     if (index !== -1) {
         favorites.splice(index, 1)
         console.log(favorites[index])

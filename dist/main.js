@@ -10,18 +10,24 @@ $('#searchButton').on('click', function() {
     const glutenFree = $('#glutenFreeCheckbox').is(':checked')
     const dairyFree = $('#dairyFreeCheckbox').is(':checked')
     isInFavoritePage = false
+
     $.get(`/recipes/${ingredient}`, {
         glutenFree: glutenFree,
         dairyFree: dairyFree,
         excludeIngredient: excludeIngredient
     }, function(data) {
-        recipes = data.recipes.map(recipeData => new Recipe(
-            recipeData.idMeal,
-            recipeData.title,
-            recipeData.ingredients,
-            recipeData.thumbnail,
-            recipeData.href
-        ))
+        recipes = data.recipes.map(recipeData => {
+            const recipe = new Recipe(
+                recipeData.idMeal,
+                recipeData.title,
+                recipeData.ingredients,
+                recipeData.thumbnail,
+                recipeData.href
+            )
+            recipe.chef = `${recipeData.chef}`
+            recipe.rate = `${recipeData.rate}`
+            return recipe
+        })
 
        recipes.forEach(recipeData => {
         favorites.find(fav => fav.id == recipeData.id) ? recipeData.isFavorite = true : recipeData.isFavorite = false
@@ -33,13 +39,18 @@ $('#searchButton').on('click', function() {
 
 $('#favoritesBtn').on('click', function() {
     $.get('/favorites', function(data) {
-         favorites = data.recipes.map(recipeData => new Recipe(
+         favorites = data.recipes.map(recipeData => {
+            const recipe = new Recipe(
                 recipeData.id,
                 recipeData.title,
                 recipeData.ingredients,
                 recipeData.thumbnail,
                 recipeData.href
-            ))
+            )
+            recipe.chef = `${recipeData.chef}`
+            recipe.rate = `${recipeData.rate}`
+            return recipe
+        })
             const apiRecipeData = favorites
             const favoritesIds = favorites.map(recipe => recipe.id)
 
@@ -53,6 +64,9 @@ $('#favoritesBtn').on('click', function() {
     })
 })
 
+function removeEmojis(text) {
+    return text.replace(/[\u{1F600}-\u{1F64F}|\u{1F300}-\u{1F5FF}|\u{1F680}-\u{1F6FF}|\u{2600}-\u{26FF}|\u{2700}-\u{27BF}|\u{2B50}|\u{1F31F}|\u{1F320}]/gu, '')
+}
 
 $('body').on('click', '.favoriteButton', function() {
     const $heartIcon = $(this).find('i')
@@ -68,13 +82,16 @@ $('body').on('click', '.favoriteButton', function() {
         $recipe.find('.ingredients-list li').each(function() {
             ingredients.push($(this).text())
         })
-
+        const chef = removeEmojis($recipe.find('#chef-name').text().trim())
+        const rate = removeEmojis($recipe.find('#rate').text().trim())
         recipeData = {
             id: recipeId,
             title: title,
             thumbnail: thumbnail,
             href: href,
-            ingredients: ingredients
+            ingredients: ingredients,
+            chef: chef,
+            rate: rate
         }
         console.log(recipeData)
        addToFavorites(recipeData)
@@ -97,7 +114,7 @@ function addToFavorites(recipeData) {
             if (response.ok) {
                 return response.json()
             }
-            throw new Error('Failed to fetch book')
+            throw new Error('Failed to fetch recipes data')
             })
             .then(data => {
                 recipeData.isFavorite = true
@@ -117,7 +134,7 @@ function removeFromFavorites(recipeId) {
     if (response.ok) {
         return response.json()
     }
-    throw new Error('Failed to fetch book')
+    throw new Error('Failed to fetch recipes data')
     })
     .then(data => {
         favorites = data

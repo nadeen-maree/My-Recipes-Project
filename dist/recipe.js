@@ -6,5 +6,7 @@ class Recipe {
         this.thumbnail = thumbnail
         this.href = href
         this.isFavorite = false
+        this.chef = ""
+        this.rate = 0
     }
 }

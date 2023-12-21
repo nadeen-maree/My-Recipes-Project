@@ -25,7 +25,7 @@ form {
 
 input[type="text"], input[type="checkbox"], button {
     margin-top: 20px;
-    padding: 15px;
+    padding: 10px;
     border: none;
     border-radius: 8px;
     font-size: 18px;
@@ -165,8 +165,9 @@ button:hover {
     cursor: pointer;
     font-size: 16px;
     color: #555;
-    margin-right: auto;
-    margin-left: 10px;
+    margin-left: auto;
+    margin-right: 10px;
+    margin-top: 0;
 }
 
 
@@ -187,6 +188,16 @@ button:hover {
     cursor: pointer;
     font-size: 16px;
     color: #555;
+    margin-right: auto;
+    margin-left: 10px;
+}
+
+#chef-name{
+    margin-right: auto;
+    margin-left: 10px;
+}
+
+#rate{
     margin-right: auto;
     margin-left: 10px;
 }

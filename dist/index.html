@@ -32,7 +32,9 @@
             <div class="recipe">
                 <h3><a href="{{href}}" target="_blank">{{title}}</a></h3>
                 <img src="{{thumbnail}}" alt="{{title}}">
-                <button class="favoriteButton" data-recipe-id={{id}}>
+                <p id="chef-name">👨🏼‍🍳 {{chef}}</p>
+                <p id="rate">⭐ {{rate}}</p>
+                <button class="favoriteButton" data-recipe-id="{{id}}">
                     {{#if isFavorite}}
                         <i class="fas fa-heart" style="color: red;"></i>
                     {{else}}

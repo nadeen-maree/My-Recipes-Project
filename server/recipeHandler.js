@@ -1,6 +1,6 @@
 const { fetchRecipes } = require('./api')
 const { filterRecipesByIngredients } = require('./ingredients')
-const { mapRecipes } = require('./recipeUtils')
+const { recipeData } = require('./recipeUtils')
 
 function handleRecipes(req, res, next) {
     const { ingredient } = req.params
@@ -9,7 +9,7 @@ function handleRecipes(req, res, next) {
     fetchRecipes(ingredient)
         .then(response => {
             const recipesData = response.data.results
-            let filteredRecipes = mapRecipes(recipesData)
+            let filteredRecipes = recipeData(recipesData)
 
             if (glutenFree === 'true') {
                 filteredRecipes = filterRecipesByIngredients(filteredRecipes, { glutenFree: true })
