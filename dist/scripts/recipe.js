@@ -1,6 +1,6 @@
 class Recipe {
-    constructor(id, title, ingredients, thumbnail, href) {
-        this.id = id
+    constructor(idMeal, title, ingredients, thumbnail, href) {
+        this.idMeal = idMeal
         this.title = title
         this.ingredients = ingredients
         this.thumbnail = thumbnail

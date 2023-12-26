@@ -22,6 +22,12 @@
             
             <input type="checkbox" id="dairyFreeCheckbox">
             <label for="dairyFreeCheckbox">Dairy-Free</label>
+
+            <input type="checkbox" id="vegetarianCheckbox">
+            <label for="vegetarianCheckbox">Vegetarian</label>
+
+            <input type="checkbox" id="veganCheckbox">
+            <label for="veganCheckbox">Vegan</label>
         </div>
         <br>
         <button type="button" id="searchButton">Search!</button>
@@ -34,7 +40,7 @@
                 <img src="{{thumbnail}}" alt="{{title}}">
                 <p id="chef-name">👨🏼‍🍳 {{chef}}</p>
                 <p id="rate">⭐ {{rate}}</p>
-                <button class="favoriteButton" data-recipe-id="{{id}}">
+                <button class="favoriteButton" data-recipe-id="{{idMeal}}">
                     {{#if isFavorite}}
                         <i class="fas fa-heart" style="color: red;"></i>
                     {{else}}
@@ -52,8 +58,12 @@
     </script>
     <script src="./jquery/dist/jquery.js"></script>
     <script src="./handlebars/dist/handlebars.js"></script>
-    <script src="recipe.js"></script>
-    <script src="renderer.js"></script>
+    <script src="scripts/recipe.js"></script>
+    <script src="scripts/renderer.js"></script>
+    <script src="scripts/recipeUtility.js"></script>
+    <script src="scripts/searchHandler.js"></script>
+    <script src="scripts/favoriteButtonClickHandler.js"></script>
+    <script src="scripts/favoritesHandler.js"></script>
     <script src="main.js"></script>
 </body>
 </html>

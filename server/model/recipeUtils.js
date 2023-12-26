@@ -1,4 +1,5 @@
 const { faker } = require('@faker-js/faker')
+const configs = require('../../configs')
 
 function mapRecipes(recipesData) {
     return recipesData.map(recipe => ({
@@ -15,7 +16,7 @@ function recipeData(recipesData){
     return recipesData.map(recipe => ({
         ...recipe, 
         chef: faker.person.firstName() + ' ' + faker.person.lastName(),
-        rate: Math.floor(Math.random()*5)+1
+        rate: Math.floor(Math.random() * configs.MAX_RATE)
 
     }))
 }
