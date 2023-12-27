@@ -1,4 +1,8 @@
 const RECIPES_API = "https://recipes-goodness-elevation.herokuapp.com/recipes/ingredient"
+const GIPHY_URL = 'https://api.giphy.com/v1/gifs/search?'
+const MY_API_KEY = 'V8wIx5oe7fXx6NSWUmkyOuyC7LXYVnA6'
+const REQUEST_EXTENSION = 'q='
+const API_KEY_EXTENSION = '&api_key='
 
 const dairyIngredients = [
     'Heavy Cream',  'Cream', 'Cheese', 'Milk', 'Butter', 'Creme', 'Ricotta', 'Mozzarella',
@@ -29,5 +33,7 @@ const sensitives = {
 
 const MAX_RATE = 5
 
+const FOOD = 'food'
 
-module.exports = {RECIPES_API, sensitives, MAX_RATE}
+
+module.exports = {RECIPES_API, sensitives, MAX_RATE, GIPHY_URL, MY_API_KEY, REQUEST_EXTENSION, API_KEY_EXTENSION, FOOD}

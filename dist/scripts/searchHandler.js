@@ -1,4 +1,4 @@
-function handleSearch() {
+function handleSearch(page) {
     const ingredient = $('#ingredientInput').val()
     const excludeIngredient = $('#excludeIngredientInput').val()
     const glutenFree = $('#glutenFreeCheckbox').is(':checked')
@@ -12,7 +12,9 @@ function handleSearch() {
         dairyFree,
         vegetarian,
         vegan,
-        excludeIngredient
+        excludeIngredient,
+        page: currentPage,
+        limit
     }, handleSearchResults)
 }
 

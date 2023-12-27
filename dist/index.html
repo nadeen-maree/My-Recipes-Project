@@ -32,12 +32,18 @@
         <br>
         <button type="button" id="searchButton">Search!</button>
     </form>
+    <div id="pages">
+        <button id="previous-page">Previous</button>
+        <button id="next-page">Next</button>
+    </div>
     <div id="recipesContainer"></div>
     <script id="recipe-template" type="text/x-handlebars-template">
         {{#each recipes}}
             <div class="recipe">
                 <h3><a href="{{href}}" target="_blank">{{title}}</a></h3>
-                <img src="{{thumbnail}}" alt="{{title}}">
+                
+                <iframe id="giphy-iframe" style="display: block;" src="{{thumbnail}}" alt="{{title}}"></iframe>
+                
                 <p id="chef-name">👨🏼‍🍳 {{chef}}</p>
                 <p id="rate">⭐ {{rate}}</p>
                 <button class="favoriteButton" data-recipe-id="{{idMeal}}">
@@ -47,6 +53,8 @@
                         <i class="far fa-heart"></i>
                     {{/if}}
                 </button>
+                <a href="mailto:?subject=Check%20out%20this%20recipe!%20{{title}}&body=You%20can%20see%20the%20recipe%20in%20this%20video%20%3A%20{{href}}"></a>
+                <button class="shareButton" data-title="{{title}}" data-video="{{href}}">Share Via Mail</button>
                 <p>Ingredients</p>
                 <ul class="ingredients-list">
                     {{#each ingredients}}
@@ -64,6 +72,8 @@
     <script src="scripts/searchHandler.js"></script>
     <script src="scripts/favoriteButtonClickHandler.js"></script>
     <script src="scripts/favoritesHandler.js"></script>
+    <script src="scripts/shareHandler.js"></script>
+    <script src="scripts/pageNavigation.js"></script>
     <script src="main.js"></script>
 </body>
 </html>
